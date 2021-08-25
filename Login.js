@@ -1,17 +1,16 @@
 import { useState } from "react";
 import {Link, useHistory} from "react-router-dom";
 import axios from "axios";
-import IsLogin from "./IsLogin"
+import IsCookie from "./IsCookie"
 
 axios.defaults.baseURL="http://18.219.215.9:8081";
 
 function Login(){
     const history=useHistory();
-    const {isLogin,setIsLogin}=IsLogin();
-    const OnLogin= (e)=>{
+    const OnLogin=async (e)=>{
         e.preventDefault();
         const {userName,password}=loginInfo;
-        axios.post('/login',{
+        await axios.post('/login',{
             username:userName,
             password:password
         }).then(
@@ -20,7 +19,7 @@ function Login(){
                 document.cookie=dataRequest[`Bearer-Token`]
                 alert("로그인 성공!")
                 history.push("/");
-                setIsLogin(true);
+                IsCookie();
             }
         ).catch((e)=>{
             console.log(e);
